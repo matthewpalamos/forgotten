@@ -26,3 +26,4 @@
 //     expect(wrapper.text()).to.equal('ACCOUNT COMPONENT');
 //   });
 // });
+
