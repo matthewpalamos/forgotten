@@ -41,6 +41,8 @@ class Account extends React.Component {
   }
 
 
+
+
   componentWillMount () {
     Request.get('/userInfo', (data) => {
       if (data.username === null) {
