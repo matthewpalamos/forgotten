@@ -43,6 +43,7 @@ class Account extends React.Component {
 
 
 
+
   componentWillMount () {
     Request.get('/userInfo', (data) => {
       if (data.username === null) {
@@ -63,7 +64,6 @@ class Account extends React.Component {
       });
     });
   }
-
 
   handleOpen () {
     this.setState({open: true});

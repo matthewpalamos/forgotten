@@ -315,6 +315,7 @@ app.post('/deleteUser', function (req, res) {
 });
 
 
+
 app.post('/updateUsername', function (req, res) {
   console.log(req.body, 'req.body update username exists');
   // Profile.forge({first: "John", last: "Smith"}).save().then(function() {
@@ -324,31 +325,6 @@ app.post('/updateUsername', function (req, res) {
     res.send('201'); //I don't know why this works, but it does.
   });
 });
-// app.get('/userInfo', function (req, res) {
-//   console.log(req.user, 'req.users exists');
-//   res.status(200).send(req.user);
-// });
-
-// app.post('/updateAvatar', function (req, res) {
-//   console.log(req.body, 'req.body updateavatar exists');
-//   // Profile.forge({first: "John", last: "Smith"}).save().then(function() {
-//   //   console.log('saved')
-//   // })
-//   Profile.forge({id: req.body.id}).save({avatar: req.body.avatar}).then(function() { //...
-//     console.log('avatar saved!!');
-//   });
-// });
-
-
-// app.post('/updateUsername', function (req, res) {
-//   console.log(req.body, 'req.body update username exists');
-//   // Profile.forge({first: "John", last: "Smith"}).save().then(function() {
-//   //   console.log('saved')
-//   // })
-//   Profile.forge({id: req.body.id}).save({username: req.body.username}).then(function() { //...
-//     console.log('username saved!!');
-//   });
-// });
 
 
 
