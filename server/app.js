@@ -349,7 +349,6 @@ app.post('/updateUsername', function (req, res) {
 //     console.log('username saved!!');
 //   });
 // });
->>>>>>> fixed issue with schema
 
 
 
