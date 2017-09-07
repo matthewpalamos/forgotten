@@ -36,6 +36,7 @@ exports.up = function (knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('items', function(table) {
       table.integer('id').unsigned().primary();
+      table.string('name', 50).unsigned().primary();
       table.string('name', 50).unsigned().nullable();
       table.text('description', 'longtext').nullable();
       table.string('type', 20).nullable();

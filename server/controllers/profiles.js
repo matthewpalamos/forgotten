@@ -64,6 +64,26 @@ module.exports.update = (req, res) => {
     });
 };
 
+module.exports.addData = (req, res) => {
+  models.Profile.where(req.body).save()
+    .then(profile => {
+      if (!profile) {
+        throw profile;
+      }
+      console.log('saved???');
+    })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .error(err => {
+      res.status(500).send(err);
+    })
+    .catch(() => {
+      res.sendStatus(404);
+    });
+};
+
+
 // module.exports.deleteOne = (req, res) => {
 //   models.Profile.where({ id: req.params.id }).fetch()
 //     .then(profile => {
