@@ -40,10 +40,6 @@ class Account extends React.Component {
     this.handleAudioClick = this.handleAudioClick.bind(this);
   }
 
-
-
-
-
   componentWillMount () {
     Request.get('/userInfo', (data) => {
       if (data.username === null) {
