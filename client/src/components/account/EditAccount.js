@@ -18,7 +18,6 @@ class EditAccount extends React.Component {
     };
 
     this.handleUsernameSubmitClick = this.handleUsernameSubmitClick.bind(this);
-    this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleUsernameTextFieldChange = this.handleUsernameTextFieldChange.bind(this);
   }
 
