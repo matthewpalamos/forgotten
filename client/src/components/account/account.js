@@ -39,6 +39,10 @@ class Account extends React.Component {
     this.backToMain = this.backToMain.bind(this);
     this.handleAudioClick = this.handleAudioClick.bind(this);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> fixed merge changes
 
   componentWillMount () {
     Request.get('/userInfo', (data) => {
