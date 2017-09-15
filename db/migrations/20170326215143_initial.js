@@ -57,7 +57,6 @@ exports.up = function (knex, Promise) {
       table.integer('puzzle_id').references('puzzles.id').
         onDelete('CASCADE');
     })
-
   ]);
 };
 

@@ -134,6 +134,7 @@ app.get('/playerItems', function (req, res) {
   //   res.send(JSON.stringify(results.attributes.level));
   //model.where('favorite_color', '<>', 'green').fetch().then(function() { //...
   //model.query({where: {"Date", '>=' , first_date}, orWhere: {"Date", '<=' , last_date}})
+<<<<<<< HEAD
   Profile.where({id: req.user.id}).fetchAll({withRelated: ['items']})
     .then((result) => {
       console.log('result of /playerItems', result.toJSON()[0].items);
@@ -180,10 +181,6 @@ app.post('/initialItem', function(req, res) {
       } else {
         res.status(201).send(JSON.stringify('Initial Item already stored'));
       }
-    })
-    .catch((error) => {
-      console.log('PHONE DOESNT EXIST', error);
-    });
 });
 
 
