@@ -44,7 +44,6 @@ class EditAccount extends React.Component {
     });
   }
 
-
   render() {
     return (
       <MuiThemeProvider>
