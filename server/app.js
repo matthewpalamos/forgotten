@@ -71,7 +71,6 @@ app.get('/puzzleData', function(req, res) {
         .then(() => {
           res.status(200).send(JSON.stringify({puzzles: puzzles, playerName: req.user.first, avatar: req.user.avatar}));
         });
-    })
     .catch(function (err) {
       console.log('err', err);
     });
@@ -134,12 +133,10 @@ app.get('/playerItems', function (req, res) {
   //   res.send(JSON.stringify(results.attributes.level));
   //model.where('favorite_color', '<>', 'green').fetch().then(function() { //...
   //model.query({where: {"Date", '>=' , first_date}, orWhere: {"Date", '<=' , last_date}})
-<<<<<<< HEAD
   Profile.where({id: req.user.id}).fetchAll({withRelated: ['items']})
     .then((result) => {
       console.log('result of /playerItems', result.toJSON()[0].items);
       res.status(200).send(JSON.stringify((result.toJSON()[0].items)));
-    });
   // .then((arr) => {
   //   var result = [];
   //   for (var i = 0; i < arr.length; i++) {
@@ -199,7 +196,7 @@ app.post('/userItems', function (req, res) {
     .catch((err) => {
       console.log(err, 'error');
     });
-});
+})
 
 app.get('/puzzleItems', function (req, res) {
   userItems.where({'user_id': req.user.id, equipped: 'yes'}).fetchAll()
@@ -324,4 +321,9 @@ app.post('/updateUsername', function (req, res) {
 
 
 
+<<<<<<< HEAD
 module.exports = app;
+=======
+
+module.exports = app;
+>>>>>>> fixed merge conflicts
