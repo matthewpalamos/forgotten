@@ -60,8 +60,6 @@ app.get('/puzzleData', function(req, res) {
           puzzles.time[results.models[i].attributes.puzzleID] = results.models[i].attributes.time_limit;
         }
       }
-      // var strArr = JSON.stringify(clean);
-      res.status(200).send(JSON.stringify({puzzles: puzzles, playerName:req.user.first}));
     })
     .then(() => {
       Items.forge().fetchAll()
@@ -73,6 +71,7 @@ app.get('/puzzleData', function(req, res) {
         .then(() => {
           res.status(200).send(JSON.stringify({puzzles: puzzles, playerName: req.user.first, avatar: req.user.avatar}));
         });
+    })
     .catch(function (err) {
       console.log('err', err);
     });
@@ -305,7 +304,8 @@ app.post('/deleteUser', function (req, res) {
     })
     .catch((err) => {
       console.log('err', err);
-    });
+      req.send('201');
+    })
 
 });
 
