@@ -322,9 +322,5 @@ app.post('/updateUsername', function (req, res) {
 
 
 
-<<<<<<< HEAD
-module.exports = app;
-=======
 
 module.exports = app;
->>>>>>> fixed merge conflicts

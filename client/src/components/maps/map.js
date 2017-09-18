@@ -20,6 +20,7 @@ class Map extends React.Component {
       greenclickedQuest: null,
       currentQuestBeforeGreenClick: null,
       clickedQuest: false,
+      lives: '3',
       playerName: '',
       lives: this.props.lives,
       lifeImg: [],
@@ -255,20 +256,18 @@ class Map extends React.Component {
             });
         });
       } else {
-        Promise.resolve(Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
-        })).then(() => {
-          this.state.completedQuests.push(this.state.currentQuest);
-          if (this.checkForItems(this.state.currentQuest)) {
-            this.handleNotificationOpen();
-          }
-          this.setState({
-            currentQuest: this.state.levelsRemaining[0],
-            levelsRemaining: this.state.levelsRemaining.slice(1)
-          }, function() {
-            this.colorPuzzles();
-            Request.post('/mapData', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
-            });
-            this.handleMessageOpen();
+        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
+        });
+        this.state.completedQuests.push(this.state.currentQuest);
+        if (this.checkForItems(this.state.currentQuest)) {
+          this.handleNotificationOpen();
+        }
+        this.setState({
+          currentQuest: this.state.levelsRemaining[0],
+          levelsRemaining: this.state.levelsRemaining.slice(1)
+        }, function() {
+          this.colorPuzzles();
+          Request.post('/mapData', {level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)}, (data) => {
           });
         });
       }
