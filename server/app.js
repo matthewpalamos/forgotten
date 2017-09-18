@@ -183,6 +183,7 @@ app.post('/initialItem', function(req, res) {
 
 
 app.post('/userItems', function (req, res) {
+  console.log(req.body);
   Items.fetchAll()
     .then((results) => {
       var change = results.map((item) => item.attributes).filter((item) => item.puzzle_id === req.user.level + 1);
@@ -200,6 +201,7 @@ app.post('/userItems', function (req, res) {
 });
 
 app.get('/puzzleItems', function (req, res) {
+  console.log(req.body);
   userItems.where({'user_id': req.user.id, equipped: 'yes'}).fetchAll()
     .then((results) => {
       var items = [];

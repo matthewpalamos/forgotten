@@ -20,7 +20,6 @@ class Map extends React.Component {
       greenclickedQuest: null,
       currentQuestBeforeGreenClick: null,
       clickedQuest: false,
-      lives: '3',
       playerName: '',
       lives: this.props.lives,
       lifeImg: [],
@@ -107,6 +106,10 @@ class Map extends React.Component {
   }
   componentWillMount() {
     this.handleLives();
+
+    console.log(this.state.lives);
+
+
     if (this.props.currentPuzzleNum >= parseInt(this.props.map + '0') + 10) {
       this.setState({
         completedQuests: ['0'].concat(this.state.levelsRemaining),
@@ -235,7 +238,7 @@ class Map extends React.Component {
         });
         this.handleReturntoMapClick();
       } else if (this.state.currentQuest === '9') {
-        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
+        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)}, (data) => {
         });
         this.state.completedQuests.push(this.state.currentQuest);
         if (this.checkForItems(this.state.currentQuest)) {
@@ -267,7 +270,9 @@ class Map extends React.Component {
           levelsRemaining: this.state.levelsRemaining.slice(1)
         }, function() {
           this.colorPuzzles();
-          Request.post('/mapData', {level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)}, (data) => {
+          Request.post('/mapData', {
+            level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)
+          }, (data) => {
           });
         });
       }
