@@ -109,7 +109,6 @@ class Map extends React.Component {
 
     console.log(this.state.lives);
 
-
     if (this.props.currentPuzzleNum >= parseInt(this.props.map + '0') + 10) {
       this.setState({
         completedQuests: ['0'].concat(this.state.levelsRemaining),
@@ -238,7 +237,7 @@ class Map extends React.Component {
         });
         this.handleReturntoMapClick();
       } else if (this.state.currentQuest === '9') {
-        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)}, (data) => {
+        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
         });
         this.state.completedQuests.push(this.state.currentQuest);
         if (this.checkForItems(this.state.currentQuest)) {
@@ -259,20 +258,20 @@ class Map extends React.Component {
             });
         });
       } else {
-        Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
-        });
-        this.state.completedQuests.push(this.state.currentQuest);
-        if (this.checkForItems(this.state.currentQuest)) {
-          this.handleNotificationOpen();
-        }
-        this.setState({
-          currentQuest: this.state.levelsRemaining[0],
-          levelsRemaining: this.state.levelsRemaining.slice(1)
-        }, function() {
-          this.colorPuzzles();
-          Request.post('/mapData', {
-            level: parseInt(this.props.map + this.state.currentQuest), lives: parseInt(this.state.lives)
-          }, (data) => {
+        Promise.resolve(Request.post('/userItems', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
+        })).then(() => {
+          this.state.completedQuests.push(this.state.currentQuest);
+          if (this.checkForItems(this.state.currentQuest)) {
+            this.handleNotificationOpen();
+          }
+          this.setState({
+            currentQuest: this.state.levelsRemaining[0],
+            levelsRemaining: this.state.levelsRemaining.slice(1)
+          }, function() {
+            this.colorPuzzles();
+            Request.post('/mapData', {level: parseInt(this.props.map + this.state.currentQuest)}, (data) => {
+            });
+            this.handleMessageOpen();
           });
         });
       }
