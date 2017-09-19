@@ -129,7 +129,6 @@ app.get('/userInfo', function (req, res) {
 });
 
 
-<<<<<<< HEAD
 app.get('/playerItems', function (req, res) {
   // Profile.forge({id: req.user.id}).fetch({columns: 'level'}).then((results) => {
   //   res.send(JSON.stringify(results.attributes.level));
@@ -152,16 +151,6 @@ app.get('/playerItems', function (req, res) {
   //   console.log(result);
   // })
 
-  //console.log('playeritems', req.user.level);
-  // Items.fetchAll()
-  //   .then((results) => {
-  //     var change = results.map((item) => item.attributes).filter((item) => item.puzzle_id <= req.user.level);
-  //     console.log(change, 'CHANGE?');
-  //     res.status(200).send(JSON.stringify(change));
-  //   })
-  //   .catch((err) => {
-  //     console.log(err, 'error');
-  //   });
 });
 // app.get('/playerItems', function (req, res) {
 //   // Profile.forge({id: req.user.id}).fetch({columns: 'level'}).then((results) => {
