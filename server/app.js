@@ -96,7 +96,6 @@ app.post('/mapData', function(req, res) {
     });
 });
 
-
 app.post('/lives', function(req, res) {
   Profile.forge({id: req.user.id}).save({lives: req.body.lives}).then(function() {
     console.log('lives saved!');
@@ -124,7 +123,6 @@ app.use(['/account', '/maps', '/backpack', '/about', '/storyline'], routes.allOt
 app.get('/userInfo', function (req, res) {
   console.log(req.user, 'req.users exists');
   // db.getUsername(req.user);
-  console.log('userinfo', req.user);
   res.status(200).send(JSON.stringify(req.user));
 });
 
@@ -180,6 +178,100 @@ app.post('/initialItem', function(req, res) {
         res.status(201).send(JSON.stringify('Initial Item already stored'));
       }
 });
+// Get request to '/userStoryline'
+// 1. grab puzzle ids from user_stories that correspond to the current user id
+// 2. grab puzzles from puzzles table that correspond to the puzzle ids
+// 3. then for every puzzle id, create an object containing puzzle's story and message and then grab all items from the items table that reference that puzzle id and push the items names into an array and store that array in the created object and then push that object into an array
+// 4. then send the stringified array in the response
+// and store the item
+
+
+//{
+//   story: 'string',
+//   message: 'string',
+//   items: [array of strings]
+// }
+
+
+//story_pop_up
+//message_pop_up
+//playerItems
+app.get('/userStoryline', function (req, res) {
+  userStories.fetchAll()
+    .then((results) => {
+      var puzzleFilter = [];
+      for (var i = 0; i < results.length; i++) {
+        console.log(results.models[i].attributes);
+        //output all puzzles related to req.user
+        if (results.models[i].attributes.user_id === req.user.id) {
+          puzzleFilter.push(results.models[i].attributes.puzzle_id);
+        }
+      }
+      return puzzleFilter;
+    })
+    .then((results) => {
+      Puzzles.fetchAll().then((puzzles) => {
+
+        var filter = puzzles.models.filter((item) => results.indexOf(item.attributes.puzzleID) !== -1);
+        return filter.reduce((acc, item, index) => {
+          var obj = {};
+          obj['story'] = item.attributes.story_pop_up;
+          obj['message'] = item.attributes.message_pop_up;
+          obj['items'] = '';
+          obj['id'] = item.attributes.puzzleID.toString();
+
+          acc.push(obj);
+          return acc;
+        }, []);
+      }).then((obj) => {
+        Items.fetchAll().then((items) => {
+          var items = items.filter((item) => results.indexOf(item.attributes.puzzle_id) !== -1).reduce((acc, item) => {
+
+            if (!acc[item.attributes.puzzle_id]) {
+              acc[item.attributes.puzzle_id] = [item.attributes.name];
+            } else {
+              acc[item.attributes.puzzle_id].push(item.attributes.name);
+            }
+            return acc;
+          }, {});
+
+          obj.sort((a, b) => {
+            if (a.id > b.id) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+
+          for (var i = 0; i < obj.length; i++) {
+            if (Object.keys(items).indexOf(obj[i].id) !== -1) {
+              obj[i].items = items[obj[i].id];
+            } else {
+              obj[i].items = [];
+            }
+            delete(obj[i].id);
+          }
+          console.log('storyObj', obj);
+          res.status(200).send(JSON.stringify(obj));
+        });
+      });
+    });
+
+});
+// Puzzles.fetchAll()
+//   .then((results) => {
+//     var puzzleFilter = [];
+//     for (var i = 0; i < results.length; i++) {
+//       console.log(results.models[i].attributes);
+//       if (results.models[i].attributes.puzzleID === req.user.id) {
+//         puzzleFilter.push(results.models[i].attributes.puzzleID);
+//       }
+//     }
+//     console.log(puzzleFilter);
+//     return puzzleFilter;
+//   })
+//})
+>>>>>>> created get request query
 
 
 app.post('/userItems', function (req, res) {
