@@ -96,6 +96,7 @@ app.post('/mapData', function(req, res) {
     });
 });
 
+
 app.post('/lives', function(req, res) {
   Profile.forge({id: req.user.id}).save({lives: req.body.lives}).then(function() {
     console.log('lives saved!');
@@ -123,6 +124,7 @@ app.use(['/account', '/maps', '/backpack', '/about', '/storyline'], routes.allOt
 app.get('/userInfo', function (req, res) {
   console.log(req.user, 'req.users exists');
   // db.getUsername(req.user);
+  console.log('userinfo', req.user);
   res.status(200).send(JSON.stringify(req.user));
 });
 
@@ -161,6 +163,21 @@ app.get('/playerItems', function (req, res) {
   //   });
 });
 
+app.post('/userItems', function (req, res) {
+  Items.fetchAll()
+    .then((results) => {
+      var change = results.map((item) => item.attributes).filter((item) => item.puzzle_id === req.user.level);
+      for (var i = 0; i < change.length; i++) {
+        userItems.forge().save({user_id: req.user.id, item_id: change[i].id, equipped: 'no'}).then(() => {
+          console.log('user items saved');
+          res.send('201');
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err, 'error');
+    });
+});
 
 app.post('/initialItem', function(req, res) {
   userItems.where({user_id: req.user.id, item_id: req.body.id})
@@ -184,18 +201,48 @@ app.post('/initialItem', function(req, res) {
 // 3. then for every puzzle id, create an object containing puzzle's story and message and then grab all items from the items table that reference that puzzle id and push the items names into an array and store that array in the created object and then push that object into an array
 // 4. then send the stringified array in the response
 // and store the item
+app.post('/mapData', function(req, res) {
+  Profile.forge({id: req.user.id}).save({level: req.body.level}).then(function() {
+    console.log('level saved!');
+  })
+    .then(() => {
+      userStories.forge().save({puzzle_id: req.body.level, user_id: req.user.id});
+      console.log('user stories saved!!');
+    })
+    .then(() => {
+      res.status(200).send(JSON.stringify('success'));
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
 
 
-//{
-//   story: 'string',
-//   message: 'string',
-//   items: [array of strings]
-// }
 
+app.get('/puzzleItems', function (req, res) {
+  userItems.where({'user_id': req.user.id, equipped: 'yes'}).fetchAll()
+    .then((results) => {
+      var items = [];
+      var loop = function() {
+        for (var i = 0; i < results.models.length; i++) {
+          Items.where('id', results.models[i].attributes.item_id).fetchAll()
+            .then((result) => {
+              items.push(result.models[0].attributes);
+            });
+        }
+      };
+      Promise.resolve(loop())
+        .then(() => {
+          setTimeout(() => {
+            res.send(items);
+          }, 100);
+        });
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
 
-//story_pop_up
-//message_pop_up
-//playerItems
 app.get('/userStoryline', function (req, res) {
   userStories.fetchAll()
     .then((results) => {
@@ -258,20 +305,6 @@ app.get('/userStoryline', function (req, res) {
     });
 
 });
-// Puzzles.fetchAll()
-//   .then((results) => {
-//     var puzzleFilter = [];
-//     for (var i = 0; i < results.length; i++) {
-//       console.log(results.models[i].attributes);
-//       if (results.models[i].attributes.puzzleID === req.user.id) {
-//         puzzleFilter.push(results.models[i].attributes.puzzleID);
-//       }
-//     }
-//     console.log(puzzleFilter);
-//     return puzzleFilter;
-//   })
-//})
->>>>>>> created get request query
 
 
 app.post('/userItems', function (req, res) {
@@ -379,10 +412,13 @@ app.get('/userStoryline', function (req, res) {
 });
 
 
+=======
+>>>>>>> added query
 app.post('/updateAvatar', function (req, res) {
   console.log(req.body, 'req.body updateavatar exists');
   Profile.forge({id: req.body.id}).save({avatar: req.body.avatar}).then(function() { //...
     console.log('avatar saved!!');
+    res.send('201');
   });
 });
 
@@ -395,7 +431,6 @@ app.post('/deleteUser', function (req, res) {
     })
     .catch((err) => {
       console.log('err', err);
-      req.send('201');
     });
 
 });
@@ -415,4 +450,8 @@ app.post('/updateUsername', function (req, res) {
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> added query
 module.exports = app;
