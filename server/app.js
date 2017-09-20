@@ -138,6 +138,9 @@ app.get('/playerItems', function (req, res) {
     .then((result) => {
       console.log('result of /playerItems', result.toJSON()[0].items);
       res.status(200).send(JSON.stringify((result.toJSON()[0].items)));
+    })
+    .catch((err) => {
+      console.log(err, 'err');
     });
   // .then((arr) => {
   //   var result = [];
