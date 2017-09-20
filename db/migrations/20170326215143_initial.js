@@ -2,7 +2,7 @@
 exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('profiles', function (table) {
-      table.increments('id').unsigned().primary();
+      table.increments('id').unsigned().defaultTo(0).primary();
       table.string('first', 100).nullable();
       table.string('last', 100).nullable();
       table.string('display', 100).nullable();

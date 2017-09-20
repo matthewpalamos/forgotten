@@ -180,10 +180,31 @@ app.get('/playerItems', function (req, res) {
 //     });
 // });
 
+app.post('/initialItem', function(req, res) {
+  userItems.where({user_id: req.user.id, item_id: req.body.id})
+    .fetch()
+    .then((result) => {
+      if (!result) {
+        userItems.forge().save({user_id: req.user.id, item_id: req.body.id, equipped: 'Not Possible'})
+          .then(() => {
+            res.status(201).send('Initial Item stored');
+          })
+          .catch(() => {
+            res.status(401).send('Initial Item failed to be stored');
+          });
+      }
+    })
+    .catch((error) => {
+      console.log('PHONE DOESNT EXIST', error);
+    });
+});
+
+
 app.post('/userItems', function (req, res) {
   Items.fetchAll()
     .then((results) => {
-      var change = results.map((item) => item.attributes).filter((item) => item.puzzle_id === req.user.level);
+      var change = results.map((item) => item.attributes).filter((item) => item.puzzle_id === req.user.level + 1);
+      console.log(change);
       for (var i = 0; i < change.length; i++) {
         userItems.forge().save({user_id: req.user.id, item_id: change[i].id, equipped: 'no'}).then(() => {
           console.log('user items saved');
