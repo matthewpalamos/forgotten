@@ -312,9 +312,10 @@ app.get('/userStoryline', function (req, res) {
       for (var i = 0; i < results.length; i++) {
         //output all puzzles related to req.user
         if (results.models[i].attributes.user_id === req.user.id) {
-          puzzleFilter.push(results.models[i].attributes.puzzle_id);
+          puzzleFilter.push(results.models[i].attributes.puzzle_id - 1);
         }
       }
+      console.log('puzzleFilter', puzzleFilter);
       return puzzleFilter;
     })
     .then((results) => {
@@ -332,8 +333,10 @@ app.get('/userStoryline', function (req, res) {
           return acc;
         }, []);
       }).then((obj) => {
+
+        console.log(obj);
         Items.fetchAll().then((items) => {
-          var items = items.filter((item) => results.indexOf(item.attributes.puzzle_id) !== -1).reduce((acc, item) => {
+          var items = items.filter((item) => results.indexOf(item.attributes.puzzle_id + 1) !== -1).reduce((acc, item) => {
 
             if (!acc[item.attributes.puzzle_id]) {
               acc[item.attributes.puzzle_id] = [item.attributes.name];
@@ -344,12 +347,16 @@ app.get('/userStoryline', function (req, res) {
           }, {});
 
           obj.sort((a, b) => {
-            if (a.id > b.id) {
+            if (parseInt(a.id) > parseInt(b.id)) {
               return 1;
             } else {
               return -1;
             }
           });
+
+          console.log('sorted', obj);
+
+
 
           for (var i = 0; i < obj.length; i++) {
             if (Object.keys(items).indexOf(obj[i].id) !== -1) {
@@ -357,8 +364,8 @@ app.get('/userStoryline', function (req, res) {
             } else {
               obj[i].items = [];
             }
-            delete(obj[i].id);
           }
+          //console.log(obj);
           res.status(200).send(JSON.stringify(obj));
         });
       });
