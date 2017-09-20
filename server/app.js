@@ -167,25 +167,6 @@ app.get('/playerItems', function (req, res) {
 });
 
 
-app.post('/initialItem', function(req, res) {
-  userItems.where({user_id: req.user.id, item_id: req.body.id})
-    .fetch()
-    .then((result) => {
-      if (!result) {
-        userItems.forge().save({user_id: req.user.id, item_id: req.body.id, equipped: 'Not Possible'})
-          .then(() => {
-            res.status(201).send(JSON.stringify('Initial Item stored'));
-          })
-          .catch(() => {
-            res.status(401).send(JSON.stringify('Initial Item failed to be stored'));
-          });
-      }
-    })
-    .catch((error) => {
-      console.log('PHONE DOESNT EXIST', error);
-    });
-});
-
 
 app.post('/userItems', function (req, res) {
   Items.fetchAll()
@@ -263,24 +244,6 @@ app.get('/puzzleItems', function (req, res) {
             res.send(items);
           }, 100);
         });
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
-
-
-
-app.post('/mapData', function(req, res) {
-  Profile.forge({id: req.user.id}).save({level: req.body.level}).then(function() {
-    console.log('level saved!');
-  })
-    .then(() => {
-      userStories.forge().save({puzzle_id: req.body.level, user_id: req.user.id});
-      console.log('user stories saved!!');
-    })
-    .then(() => {
-      res.status(200).send(JSON.stringify('success'));
     })
     .catch((err) => {
       throw err;
