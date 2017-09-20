@@ -13,7 +13,7 @@ exports.seed = function (knex, Promise) {
 
   for (var i = 0; i < item.length; i++) {
     models.Puzzles.forge({
-      id: 0,
+      id: i,
       puzzleID: item[i].puzzleID,
       name: item[i].name,
       problem: item[i].problem,
