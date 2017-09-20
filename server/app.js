@@ -219,6 +219,7 @@ app.post('/initialItem', function(req, res) {
       } else {
         res.status(201).send(JSON.stringify('Initial Item already stored'));
       }
+    });
 });
 // Get request to '/userStoryline'
 // 1. grab puzzle ids from user_stories that correspond to the current user id
@@ -269,7 +270,6 @@ app.get('/puzzleItems', function (req, res) {
 });
 
 
-<<<<<<< HEAD
 app.post('/userItems', function (req, res) {
   Items.fetchAll()
     .then((results) => {
@@ -280,7 +280,7 @@ app.post('/userItems', function (req, res) {
           console.log('user items saved');
         });
       }
-    res.send('201');
+      res.send('201');
     })
     .catch((err) => {
       console.log(err, 'error');
@@ -304,8 +304,6 @@ app.post('/mapData', function(req, res) {
     });
 });
 
-=======
->>>>>>> added query optimizations
 
 app.get('/userStoryline', function (req, res) {
   userStories.fetchAll()
