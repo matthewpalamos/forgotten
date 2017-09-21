@@ -106,9 +106,6 @@ class Map extends React.Component {
   }
   componentWillMount() {
     this.handleLives();
-
-    console.log(this.state.lives);
-
     if (this.props.currentPuzzleNum >= parseInt(this.props.map + '0') + 10) {
       this.setState({
         completedQuests: ['0'].concat(this.state.levelsRemaining),
